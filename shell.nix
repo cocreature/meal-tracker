@@ -5,9 +5,12 @@ with pkgs;
 stdenv.mkDerivation {
   name = "rust-env";
   nativeBuildInputs = [
-    rustc cargo
+    rustc cargo rls
+    pkgconfig
+    sqlite
   ];
   buildInputs = [
+    openssl
   ];
 
 }
