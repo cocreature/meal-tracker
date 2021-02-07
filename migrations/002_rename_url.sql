@@ -1,0 +1,1 @@
+alter table meals rename column url to source;
