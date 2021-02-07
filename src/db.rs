@@ -13,6 +13,11 @@ pub async fn connect(cfg: &Config) -> Result<sqlx::SqlitePool, sqlx::Error> {
 }
 
 #[instrument]
+pub async fn migrate(pool: &sqlx::SqlitePool) -> Result<(), sqlx::migrate::MigrateError> {
+    sqlx::migrate!("./migrations").run(pool).await
+}
+
+#[instrument]
 pub async fn list(pool: &sqlx::SqlitePool) -> BoxStream<'_, Result<Meal, sqlx::Error>> {
     sqlx::query_as::<_, Meal>(
         "select title, source, description, rating, entered from meals order by entered desc",
@@ -26,7 +31,7 @@ pub async fn insert(
     meal: &Meal,
 ) -> Result<sqlx::sqlite::SqliteQueryResult, sqlx::Error> {
     sqlx::query(
-        "insert into meals (title, url, description, rating, entered) values (?, ?, ?, ?, ?)",
+        "insert into meals (title, source, description, rating, entered) values (?, ?, ?, ?, ?)",
     )
     .bind(meal.title.clone())
     .bind(meal.source.clone())

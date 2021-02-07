@@ -3,7 +3,7 @@ use clap::Clap;
 
 pub mod db;
 
-#[derive(sqlx::FromRow, Debug)]
+#[derive(sqlx::FromRow, Debug, PartialEq)]
 pub struct Meal {
     pub title: String,
     pub source: Option<String>,

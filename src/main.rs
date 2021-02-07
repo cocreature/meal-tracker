@@ -8,7 +8,7 @@ async fn main() -> Result<(), sqlx::Error> {
     tracing_subscriber::fmt::init();
     let config = Config::parse();
     let pool = db::connect(&config).await?;
-    sqlx::migrate!("./migrations").run(&pool).await?;
+    db::migrate(&pool).await?;
     match config.cmd {
         Command::Add(_) => {
             let meal = Meal::read().await?;
